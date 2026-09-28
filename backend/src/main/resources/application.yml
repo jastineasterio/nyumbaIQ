@@ -1,0 +1,97 @@
+spring:
+  application:
+    name: nyumbaiq-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nyumbaiq
+    username: nyumbaiq
+    password: nyumbaiq
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    clean-disabled: true
+
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 3
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-me-in-production-to-a-very-long-random-string}
+    access-token-validity: 86400000
+    refresh-token-validity: 604800000
+  file:
+    upload-dir: ./uploads
+    max-file-size: 10485760
+    allowed-types:
+      - image/jpeg
+      - image/png
+      - image/webp
+      - application/pdf
+      - application/msword
+      - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+  cors:
+    allowed-origins:
+      - http://localhost:5173
+      - http://localhost:3000
+      - http://localhost:8081
+  ai:
+    gemini:
+      api-key: ${GEMINI_API_KEY:}
+      model: gemini-1.5-flash
+      base-url: https://generativelanguage.googleapis.com/v1beta
+      max-output-tokens: 1024
+      temperature: 0.2
+      rate-limit-per-minute: 30
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
