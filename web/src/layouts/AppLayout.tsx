@@ -1,14 +1,25 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useRole } from '../hooks/useRole';
-import Sidebar from '../components/layout/Sidebar';
+import Sidebar, { SidebarContent } from '../components/layout/Sidebar';
+import MobileDrawer from '../components/layout/MobileDrawer';
 
 const AppLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, logout } = useAuth();
   const { role } = useRole(user?.role);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSidebarOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -77,11 +88,18 @@ const AppLayout = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <Sidebar links={links} onClose={() => setSidebarOpen(false)} />
-      <main className="flex-1 min-h-screen">
+
+      <MobileDrawer open={sidebarOpen} onClose={() => setSidebarOpen(false)}>
+        <SidebarContent links={links} onClose={() => setSidebarOpen(false)} />
+      </MobileDrawer>
+
+      <main className="flex-1 min-h-screen lg:ml-[var(--sidebar-width)]">
         <header className="lg:hidden bg-white border-b border-slate-200 h-16 flex items-center justify-between px-4 sticky top-0 z-40">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 -ml-2 rounded-lg hover:bg-slate-100"
+            className="p-3 -ml-2 rounded-lg hover:bg-slate-100"
+            aria-label="Open navigation menu"
+            aria-expanded={sidebarOpen}
           >
             <svg className="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />

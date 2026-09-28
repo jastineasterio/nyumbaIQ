@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+﻿import { createBrowserRouter, Navigate } from 'react-router-dom';
 import AppLayout from '../layouts/AppLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/Login';
@@ -33,8 +33,8 @@ import { useRole } from '../hooks/useRole';
 import AiAssistant from '../pages/AiAssistant';
 
 const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode; allowedRoles: string[] }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  const { role } = useRole(isAuthenticated ? undefined : 'TENANT');
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const { role } = useRole(user?.role);
 
   if (isLoading) {
     return (
@@ -327,3 +327,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+

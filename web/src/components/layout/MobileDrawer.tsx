@@ -22,8 +22,17 @@ const MobileDrawer = ({ open, onClose, children }: MobileDrawerProps) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/50 z-50 lg:hidden" onClick={onClose} />
-      <div className="fixed inset-y-0 left-0 w-72 bg-white z-50 shadow-xl lg:hidden">
+      <div
+        className="fixed inset-0 bg-black/50 z-50 lg:hidden"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <div
+        className="fixed inset-y-0 left-0 w-72 md:w-80 bg-white z-50 shadow-xl lg:hidden flex flex-col overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+      >
         {children}
       </div>
     </>
@@ -31,4 +40,3 @@ const MobileDrawer = ({ open, onClose, children }: MobileDrawerProps) => {
 };
 
 export default MobileDrawer;
-

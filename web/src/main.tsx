@@ -1,10 +1,9 @@
-import React from 'react';
+﻿import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import router from './routes';
 import App from './App';
+import { AuthProvider } from './contexts/AuthContext';
 import './index.css';
 
 const queryClient = new QueryClient({
@@ -21,19 +20,20 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <AuthProvider>
         <App />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#1e293b',
-              color: '#f8fafc',
-            },
-          }}
-        />
-      </BrowserRouter>
+      </AuthProvider>
+
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#1e293b',
+            color: '#f8fafc',
+          },
+        }}
+      />
     </QueryClientProvider>
   </React.StrictMode>
 );

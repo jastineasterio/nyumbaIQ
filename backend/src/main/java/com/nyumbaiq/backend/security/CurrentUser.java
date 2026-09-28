@@ -21,7 +21,7 @@ public class CurrentUser {
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
             throw new UnauthorizedException("User not authenticated");
         }
-        return UUID.fromString(auth.getName());
+        return ((User) auth.getPrincipal()).getId();
     }
 
     public User getUser() {

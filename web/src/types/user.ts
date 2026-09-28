@@ -24,15 +24,6 @@ export interface LoginRequest {
 export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
-  user: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    role: UserRole;
-    status: UserStatus;
-  };
 }
 
 export interface ChangePasswordRequest {
